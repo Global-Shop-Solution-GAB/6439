@@ -1,0 +1,536 @@
+﻿Program.Sub.ScreenSU.Start
+gui.F_ShipConfirm..create
+gui.F_ShipConfirm..caption("Shipments Requiring Confirmation")
+gui.F_ShipConfirm..size(9705,8925)
+gui.F_ShipConfirm..minx(0)
+gui.F_ShipConfirm..miny(0)
+gui.F_ShipConfirm..position(0,0)
+gui.F_ShipConfirm..event(unload,f_shipconfirm_unload)
+gui.F_ShipConfirm..alwaysontop(False)
+gui.F_ShipConfirm..fontname("Arial")
+gui.F_ShipConfirm..fontsize(9)
+gui.F_ShipConfirm..forecolor(0)
+gui.F_ShipConfirm..fontstyle(False,False,False,False,)
+gui.F_ShipConfirm..BackColor(-2147483633)
+gui.F_ShipConfirm..controlbox(True)
+gui.F_ShipConfirm..maxbutton(True)
+gui.F_ShipConfirm..minbutton(True)
+gui.F_ShipConfirm..mousepointer(0)
+gui.F_ShipConfirm..moveable(True)
+gui.F_ShipConfirm..sizeable(True)
+gui.F_ShipConfirm..ShowInTaskBar(True)
+gui.F_ShipConfirm..titlebar(True)
+gui.F_ShipConfirm.gsflexgrid1.create(gsflexgrid)
+gui.F_ShipConfirm.gsflexgrid1.FixedRows(0)
+gui.F_ShipConfirm.gsflexgrid1.FixedCols(0)
+gui.F_ShipConfirm.gsflexgrid1.visible(True)
+gui.F_ShipConfirm.gsflexgrid1.size(9135,7155)
+gui.F_ShipConfirm.gsflexgrid1.zorder(0)
+gui.F_ShipConfirm.gsflexgrid1.position(145,990)
+gui.F_ShipConfirm.gsflexgrid1.enabled(True)
+gui.F_ShipConfirm.gsflexgrid1.event(checkclick,gsflexgrid1_checkclick)
+gui.F_ShipConfirm.lbl1.create(label,"Ship Date Filter",True,1935,255,1,140,145,True,0,Arial,9,-2147483633,0)
+gui.F_ShipConfirm.lbl1.defaultvalue("")
+gui.F_ShipConfirm.lbl1.controlgroup(0)
+gui.F_ShipConfirm.dlst_ShipDate.create(dropdownlist)
+gui.F_ShipConfirm.dlst_ShipDate.visible(True)
+gui.F_ShipConfirm.dlst_ShipDate.size(2010,345)
+gui.F_ShipConfirm.dlst_ShipDate.zorder(0)
+gui.F_ShipConfirm.dlst_ShipDate.position(135,420)
+gui.F_ShipConfirm.dlst_ShipDate.enabled(True)
+gui.F_ShipConfirm.dlst_ShipDate.fontname("Arial")
+gui.F_ShipConfirm.dlst_ShipDate.fontsize(9)
+gui.F_ShipConfirm.dlst_ShipDate.event(click,dlst_shipdate_click)
+gui.F_ShipConfirm.dlst_ShipDate.defaultvalue("")
+gui.F_ShipConfirm.dlst_ShipDate.controlgroup(0)
+gui.F_ShipConfirm.dlst_Customer.create(dropdownlist)
+gui.F_ShipConfirm.dlst_Customer.visible(True)
+gui.F_ShipConfirm.dlst_Customer.size(3690,330)
+gui.F_ShipConfirm.dlst_Customer.zorder(0)
+gui.F_ShipConfirm.dlst_Customer.position(2315,425)
+gui.F_ShipConfirm.dlst_Customer.enabled(True)
+gui.F_ShipConfirm.dlst_Customer.fontname("Arial")
+gui.F_ShipConfirm.dlst_Customer.fontsize(9)
+gui.F_ShipConfirm.dlst_Customer.event(click,dlst_customer_click)
+gui.F_ShipConfirm.dlst_Customer.defaultvalue("")
+gui.F_ShipConfirm.dlst_Customer.controlgroup(0)
+gui.F_ShipConfirm.lbl2.create(label,"Customer Name Filter",True,1935,255,1,2315,155,True,0,Arial,9,-2147483633,0)
+gui.F_ShipConfirm.lbl2.defaultvalue("")
+gui.F_ShipConfirm.lbl2.controlgroup(0)
+gui.F_ShipConfirm.cmdProcess.create(button)
+gui.F_ShipConfirm.cmdProcess.caption("Process")
+gui.F_ShipConfirm.cmdProcess.visible(True)
+gui.F_ShipConfirm.cmdProcess.size(1590,600)
+gui.F_ShipConfirm.cmdProcess.zorder(0)
+gui.F_ShipConfirm.cmdProcess.position(7700,150)
+gui.F_ShipConfirm.cmdProcess.enabled(True)
+gui.F_ShipConfirm.cmdProcess.fontname("Arial")
+gui.F_ShipConfirm.cmdProcess.fontsize(9)
+gui.F_ShipConfirm.cmdProcess.event(click,cmdprocess_click)
+gui.F_ShipConfirm.cmdProcess.defaultvalue("")
+gui.F_ShipConfirm.cmdProcess.controlgroup(0)
+
+
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+
+Variable.UDT.uCust.Define("CUSTOMER",String,CUSTOMER)
+Variable.UDT.uCust.Define("NAME",String,NAME_CUSTOMER)
+Variable.uGlobal.uCust.Declare("uCust")
+Variable.UDT.uShipment.Define("DATE_SHIP",Date,DATE_SHIP)
+Variable.UDT.uShipment.Define("SHIP_BY",String,SHIP_BY)
+Variable.UDT.uShipment.Define("CUSTOMER",String,CUSTOMER)
+Variable.UDT.uShipment.Define("NAME",String)
+Variable.UDT.uShipment.Define("ORDER_NO",String,ORDER_NO)
+Variable.UDT.uShipment.Define("ORDER_SUFFIX",String,ORDER_SUFFIX)
+Variable.UDT.uShipment.Define("DO",String)
+Variable.UDT.uShipment.Define("FLAG",Boolean)
+Variable.uGlobal.uShipment.Declare("uShipment")
+Variable.UDT.uShipDate.Define("DATE_SHIP",Date,DATE_SHIP)
+Variable.UDT.uShipDate.Define("INDEX",Long)
+Variable.uGlobal.uShipDate.Declare("uShipDate")
+Variable.UDT.uCustS.Define("CUSTOMER",String,CUSTOMER)
+Variable.UDT.uCustS.Define("NAME",String)
+Variable.UDT.uCustS.Define("INDEX",Long)
+Variable.uGlobal.uCustS.Declare("uCustS")
+Variable.Global.iCheckclick.Declare(Long,0)
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+V.Local.i1.Declare(Long)
+V.Local.iRow.Declare(Long)
+
+V.Local.sIconPath.Declare(String)
+V.Local.sShipDate.Declare(String)
+V.Local.sRet.Declare(String)
+V.Local.bExist.Declare
+
+F.ODBC.Connection!conx.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+
+F.ODBC.Connection!conx.TableExists("GAB_6439_SHIPMENT_CONFIRM",V.Local.bExist)
+F.Intrinsic.Control.If(V.Local.bExist,=,False)
+	F.ODBC.Connection!Conx.Execute("CREATE TABLE GAB_6439_SHIPMENT_CONFIRM (ORDER_NO VARCHAR(7), ORDER_SUFFIX VARCHAR(4), DATE_SHIP DATE, CUSTOMER VARCHAR(6), SHIP_BY VARCHAR(8), DATE_RECEIVED DATE, RECEIVED_BY VARCHAR(8), PRIMARY KEY (ORDER_NO,ORDER_SUFFIX,DATE_SHIP));")
+F.Intrinsic.Control.EndIf
+
+'New shipment post-save hook
+F.Intrinsic.Control.If(V.Caller.Hook,=,28532)
+	F.Intrinsic.Control.CallSub(Shipmentnew)
+'Delete shipment pre-delete hook
+F.Intrinsic.Control.ElseIf(V.Caller.Hook,=,26250)
+	F.Intrinsic.Control.CallSub(Shipmentdelete)
+'Block Select Order To Invoice From Packing List and Order
+F.Intrinsic.Control.ElseIf(V.Caller.Hook,=,34610)
+	Function.Intrinsic.UI.ChangeCallerProperty(variable.passed.000001, "LOCK", 1)
+	Function.Intrinsic.UI.ChangeCallerProperty(variable.passed.000003, "LOCK", 1)
+'Select order to invoice pre-save hook
+F.Intrinsic.Control.ElseIf(V.Caller.Hook,=,36640)
+	F.Intrinsic.Control.CallSub(Selectordercheck)
+'Shipment confirmation custom screen
+F.Intrinsic.Control.Else
+	F.Intrinsic.String.Concat(V.Caller.GlobalDir,"\SP2\GLOBAL16.ico",V.Local.sIconPath)
+	Gui.F_ShipConfirm..Icon(V.Local.sIconPath)
+	
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst","SELECT CUSTOMER, NAME_CUSTOMER FROM V_CUSTOMER_MASTER ORDER BY CUSTOMER")
+	F.Intrinsic.Variable.LoadUDTFromRecordset("conx","rst","uGlobal.uCust",False)
+	F.ODBC.conx!rst.Close
+	
+	F.Intrinsic.Control.CallSub(Gsflexgrid1_style)
+	
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst","SELECT A.*, Cast(0 as Bit) as FLAG FROM GAB_6439_SHIPMENT_CONFIRM A WHERE RECEIVED_BY IS NULL ORDER BY ORDER_NO,ORDER_SUFFIX")
+	F.Intrinsic.Variable.LoadUDTFromRecordset("conx","rst","uGlobal.uShipment",False)
+	F.ODBC.conx!rst.Close
+	
+	F.Intrinsic.Control.For(V.Local.i1,0,V.uGlobal.uShipment.UBound,1)
+		F.Intrinsic.Variable.UDTSeek(V.uGlobal.uCust!CUSTOMER,V.uGlobal.uShipment(V.Local.i1)!CUSTOMER.Trim,0,V.Local.sRet)
+		F.Intrinsic.Math.ConvertToLong(V.Local.sRet,V.Local.iRow)
+		V.uGlobal.uShipment(V.Local.i1)!NAME.Set(V.uGlobal.uCust(V.Local.iRow)!NAME.Trim)
+		F.Intrinsic.String.Concat(V.uGlobal.uShipment(V.Local.i1)!ORDER_NO.Trim,"-",V.uGlobal.uShipment(V.Local.i1)!ORDER_SUFFIX.Trim,V.uGlobal.uShipment(V.Local.i1)!DO)
+		V.uGlobal.uShipment(V.Local.i1)!FLAG.Set(False)
+	F.Intrinsic.Control.Next(V.Local.i1)
+		
+	Gui.F_ShipConfirm.gsflexgrid1.LoadFromUDT("V.uGlobal.uShipment","DO::0*!*NAME::1*!*DATE_SHIP::2*!*SHIP_BY::3*!*FLAG::4",2)
+	
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst","SELECT DISTINCT DATE_SHIP FROM GAB_6439_SHIPMENT_CONFIRM WHERE RECEIVED_BY IS NULL ORDER BY DATE_SHIP")
+	F.Intrinsic.Variable.LoadUDTFromRecordset("conx","rst","uGlobal.uShipDate",False)
+	
+	Gui.F_ShipConfirm.dlst_ShipDate.AddItem("All",0)
+	F.Intrinsic.Control.For(V.Local.i1,0,V.uGlobal.uShipDate.UBound,1)
+		F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.iRow)
+		V.uGlobal.uShipDate(V.Local.i1)!INDEX.Set(V.Local.iRow)
+		F.Intrinsic.String.Format(V.uGlobal.uShipDate(V.Local.i1)!DATE_SHIP,"D MMM YYYY",V.Local.sShipDate)
+		Gui.F_ShipConfirm.dlst_ShipDate.AddItem(V.Local.sShipDate,V.Local.iRow)
+	F.Intrinsic.Control.Next(V.Local.i1)
+	F.ODBC.conx!rst.Close
+'	Gui.F_ShipConfirm.dlst_ShipDate.Text("All")
+	
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst","SELECT DISTINCT CUSTOMER FROM GAB_6439_SHIPMENT_CONFIRM WHERE RECEIVED_BY IS NULL ORDER BY CUSTOMER")
+	F.Intrinsic.Variable.LoadUDTFromRecordset("conx","rst","uGlobal.uCustS",False)
+	
+	Gui.F_ShipConfirm.dlst_Customer.AddItem("All",0)
+	F.Intrinsic.Control.For(V.Local.i1,0,V.uGlobal.uCustS.UBound,1)
+		F.Intrinsic.Variable.UDTSeek(V.uGlobal.uCust!CUSTOMER,V.uGlobal.uCustS(V.Local.i1)!CUSTOMER.Trim,0,V.Local.sRet)
+		F.Intrinsic.Math.ConvertToLong(V.Local.sRet,V.Local.iRow)
+		V.uGlobal.uCustS(V.Local.i1)!NAME.Set(V.uGlobal.uCust(V.Local.iRow)!NAME.Trim)
+		F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.iRow)
+		Gui.F_ShipConfirm.dlst_Customer.AddItem(V.uGlobal.uCustS(V.Local.i1)!NAME.Trim,V.Local.iRow)
+		V.uGlobal.uCustS(V.Local.i1)!INDEX.Set(V.Local.iRow)
+	F.Intrinsic.Control.Next(V.Local.i1)
+	F.ODBC.conx!rst.Close
+'	Gui.F_ShipConfirm.dlst_Customer.Text("All")
+	
+	Gui.F_ShipConfirm..Show
+F.Intrinsic.Control.EndIf
+	
+F.ODBC.Connection!conx.Close
+
+Program.Sub.Main.End
+
+Program.Sub.ShipmentNew.Start
+V.Local.dShipDate.Declare(Date)
+
+V.Local.sCust.Declare(String)
+V.Local.sQuery.Declare(String)
+V.Local.sShipDate.Declare(String)
+V.Local.sShipNo.Declare(String)
+V.Local.sShipSuffix.Declare(String)
+
+V.Local.sCust.Set(V.Passed.000204)
+V.Local.sShipDate.Set(V.Passed.000206)
+
+F.Intrinsic.Date.ConvertDString(V.Local.sShipDate,"MMDDYY",V.Local.dShipDate)
+F.Intrinsic.String.Format(V.Local.dShipDate,"YYYY-MM-DD",V.Local.sShipDate)
+V.Local.sShipNo.Set(V.Passed.FIRST-ORDER)
+V.Local.sShipSuffix.Set(V.Passed.FIRST-SEQ)
+
+F.Intrinsic.String.Concat("SELECT * FROM GAB_6439_SHIPMENT_CONFIRM WHERE ORDER_NO = '",V.Local.sShipNo.Trim,"' AND ORDER_SUFFIX = '",V.Local.sShipSuffix.Trim,"' AND DATE_SHIP = '",V.Local.sShipDate.Trim,"'",V.Local.sQuery)
+F.ODBC.Connection!conx.OpenLocalRecordsetRW("rst",V.Local.sQuery)
+F.ODBC.conx!rst.AddNew
+F.ODBC.conx!rst.Set!ORDER_NO(V.Local.sShipNo.Trim)
+F.ODBC.conx!rst.Set!ORDER_SUFFIX(V.Local.sShipSuffix.Trim)
+F.ODBC.conx!rst.Set!DATE_SHIP(V.Local.sShipDate.Trim)
+F.ODBC.conx!rst.Set!CUSTOMER(V.Local.sCust.Trim)
+F.ODBC.conx!rst.Set!SHIP_BY(V.Caller.User)
+F.ODBC.conx!rst.Update
+F.ODBC.conx!rst.Close
+
+Program.Sub.ShipmentNew.End
+
+Program.Sub.ShipmentDelete.Start
+V.Local.dShipDate.Declare(Date)
+
+V.Local.sQuery.Declare(String)
+V.Local.sShipDate.Declare(String)
+V.Local.sShipNo.Declare(String)
+V.Local.sShipSuffix.Declare(String)
+
+F.Intrinsic.String.LPad(V.Passed.000150,"0",7,V.Local.sShipNo)
+F.Intrinsic.String.LPad(V.Passed.000151,"0",4,V.Local.sShipSuffix)
+V.Local.sShipDate.Set(V.Passed.000022)
+
+F.Intrinsic.Date.ConvertDString(V.Local.sShipDate,"MMDDYY",V.Local.dShipDate)
+F.Intrinsic.String.Format(V.Local.dShipDate,"YYYY-MM-DD",V.Local.sShipDate)
+
+F.Intrinsic.String.Concat("DELETE FROM GAB_6439_SHIPMENT_CONFIRM WHERE ORDER_NO = '",V.Local.sShipNo.Trim,"' AND ORDER_SUFFIX = '",V.Local.sShipSuffix.Trim,"' AND DATE_SHIP = '",V.Local.sShipDate.Trim,"'",V.Local.sQuery)
+F.ODBC.Connection!conx.Execute(V.Local.sQuery)
+
+Program.Sub.ShipmentDelete.End
+
+Program.Sub.SelectOrderCheck.Start
+V.Local.dShipDate.Declare(Date)
+
+V.Local.sQuery.Declare(String)
+V.Local.sOrder.Declare(String)
+V.Local.sShipDate.Declare(String)
+V.Local.sShipNo.Declare(String)
+V.Local.sSuffix.Declare(String)
+
+F.Intrinsic.String.LPad(V.Passed.000003,"0",7,V.Local.sOrder)
+F.Intrinsic.String.LPad(V.Passed.000004,"0",4,V.Local.sSuffix)
+
+F.Intrinsic.String.Concat("SELECT DATE_SHIP FROM SHIPMENT_LINES WHERE ORDER_NO = '",V.Local.sOrder.Trim,"' AND ORDER_SUFFIX = '",V.Local.sSuffix.Trim,"' AND RECORD_TYPE = 'L' AND LINE_TYPE = 'S'",V.Local.sQuery)
+F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sQuery)
+V.Local.sShipDate.Set(V.ODBC.conx!rst.FieldValTrim!DATE_SHIP)
+F.Intrinsic.Date.ConvertDString(V.Local.sShipDate,"MMDDYY",V.Local.dShipDate)
+F.Intrinsic.String.Format(V.Local.dShipDate,"YYYY-MM-DD",V.Local.sShipDate)
+F.ODBC.conx!rst.Close
+
+F.Intrinsic.String.Concat("SELECT RECEIVED_BY FROM GAB_6439_SHIPMENT_CONFIRM WHERE ORDER_NO = '",V.Local.sOrder.Trim,"' AND ORDER_SUFFIX = '",V.Local.sSuffix.Trim,"' AND DATE_SHIP = '",V.Local.sShipDate.Trim,"'",V.Local.sQuery)
+F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sQuery)
+F.Intrinsic.Control.If(V.ODBC.conx!rst.FieldValTrim!RECEIVED_BY,=,"")
+	F.Intrinsic.UI.Msgbox("The shipment document has not been received by accounting department.","NOTIFICATION")
+	V.Passed.777777.Set(1)
+F.Intrinsic.Control.EndIf
+F.ODBC.conx!rst.Close
+
+Program.Sub.SelectOrderCheck.End
+
+Program.Sub.gsflexgrid1_style.Start
+V.Local.i1.Declare(Long)
+
+V.Local.sTitles.Declare(String)
+
+V.Local.sTitles.Set("DO No.*!*Customer*!*Ship Date*!*Ship By*!*")
+F.Intrinsic.String.Split(V.Local.sTitles,"*!*",V.Local.sTitles)
+
+Gui.F_ShipConfirm.gsflexgrid1.Cols(5)
+Gui.F_ShipConfirm.gsflexgrid1.Rows(2)
+Gui.F_ShipConfirm.gsflexgrid1.FixedRows(1)
+
+F.Intrinsic.Control.For(V.Local.i1,0,V.Local.sTitles.UBound,1)
+	Gui.F_ShipConfirm.gsflexgrid1.TextMatrix(V.Local.i1,0,V.Local.sTitles(V.Local.i1))
+	Gui.F_ShipConfirm.gsflexgrid1.BuildStyle(1,V.Local.i1,"Type","Locked",True)
+	Gui.F_ShipConfirm.gsflexgrid1.BuildStyle(1,V.Local.i1,"Fontstyle","Bold",True)
+	Gui.F_ShipConfirm.gsflexgrid1.BuildStyle(1,V.Local.i1,"Format","Alignment",4)
+	Gui.F_ShipConfirm.gsflexgrid1.BuildStyle(1,V.Local.i1,"Fontstyle","Size",9)
+	Gui.F_ShipConfirm.gsflexgrid1.BuildStyle(2,V.Local.i1,"Fontstyle","Size",9)
+	F.Intrinsic.Control.If(V.Local.i1,=,4)
+		Gui.F_ShipConfirm.gsflexgrid1.BuildStyle(2,V.Local.i1,"Type","Checkbox",False)
+	F.Intrinsic.Control.Else
+		Gui.F_ShipConfirm.gsflexgrid1.BuildStyle(2,V.Local.i1,"Type","Locked",True)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.i1)
+
+Gui.F_ShipConfirm.gsflexgrid1.BuildStyle(2,0,"Format","Alignment",4)
+Gui.F_ShipConfirm.gsflexgrid1.BuildStyle(2,1,"Format","Alignment",2)
+Gui.F_ShipConfirm.gsflexgrid1.BuildStyle(2,2,"Format","Alignment",4)
+Gui.F_ShipConfirm.gsflexgrid1.BuildStyle(2,3,"Format","Alignment",4)
+Gui.F_ShipConfirm.gsflexgrid1.BuildStyle(2,4,"Format","Alignment",4)
+
+Gui.F_ShipConfirm.gsflexgrid1.BuildStyle(2,2,"Format","Mask","DD/MM/YYYY")
+
+Gui.F_ShipConfirm.gsflexgrid1.SetColumnPercentages(".19:.45:.14:.12:.10")
+
+Gui.F_ShipConfirm.gsflexgrid1.ApplyStyle(0,1)
+
+
+Program.Sub.gsflexgrid1_style.End
+
+Program.Sub.LoadFlexgrid.Start
+V.Local.i1.Declare(Long)
+V.Local.iRow1.Declare(Long)
+V.Local.iRow2.Declare(Long)
+
+V.Local.sQuery.Declare(String)
+V.Local.sRet.Declare(String)
+V.Local.sShipDate.Declare(String)
+
+F.ODBC.Connection!conx.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+
+F.Intrinsic.Control.If(V.Args.iParam1,=,0)
+	F.Intrinsic.Control.If(V.Args.iParam2,=,0)
+		F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst","SELECT A.*, Cast(0 as Bit) as FLAG FROM GAB_6439_SHIPMENT_CONFIRM A WHERE RECEIVED_BY IS NULL ORDER BY ORDER_NO, ORDER_SUFFIX")
+	F.Intrinsic.Control.Else
+		F.Intrinsic.Variable.UDTSeek(V.uGlobal.uCustS!INDEX,V.Args.iParam2,0,V.Local.sRet)
+		F.Intrinsic.Math.ConvertToLong(V.Local.sRet,V.Local.iRow1)
+		F.Intrinsic.String.Concat("SELECT A.*, Cast(0 as Bit) as FLAG FROM GAB_6439_SHIPMENT_CONFIRM A WHERE RECEIVED_BY IS NULL AND CUSTOMER = '",V.uGlobal.uCustS(V.Local.iRow1)!CUSTOMER.Trim,"' ORDER BY ORDER_NO, ORDER_SUFFIX",V.Local.sQuery)
+		F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sQuery)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Else
+	F.Intrinsic.Variable.UDTSeek(V.uGlobal.uShipDate!INDEX,V.Args.iParam1,0,V.Local.sRet)
+	F.Intrinsic.Math.ConvertToLong(V.Local.sRet,V.Local.iRow1)
+	F.Intrinsic.String.Format(V.uGlobal.uShipDate(V.Local.iRow1)!DATE_SHIP,"YYYY-MM-DD",V.Local.sShipDate)
+		
+	F.Intrinsic.Control.If(V.Args.iParam2,=,0)
+		F.Intrinsic.String.Concat("SELECT A.*, Cast(0 as Bit) as FLAG FROM GAB_6439_SHIPMENT_CONFIRM A WHERE RECEIVED_BY IS NULL AND DATE_SHIP = '",V.Local.sShipDate.Trim,"' ORDER BY ORDER_NO, ORDER_SUFFIX",V.Local.sQuery)
+	F.Intrinsic.Control.Else
+		F.Intrinsic.Variable.UDTSeek(V.uGlobal.uCustS!INDEX,V.Args.iParam2,0,V.Local.sRet)
+		F.Intrinsic.Math.ConvertToLong(V.Local.sRet,V.Local.iRow2)
+		F.Intrinsic.String.Concat("SELECT A.*, Cast(0 as Bit) as FLAG FROM GAB_6439_SHIPMENT_CONFIRM A WHERE RECEIVED_BY IS NULL AND DATE_SHIP = '",V.Local.sShipDate.Trim,"' AND CUSTOMER = '",V.uGlobal.uCustS(V.Local.iRow2)!CUSTOMER.Trim,"' ORDER BY ORDER_NO, ORDER_SUFFIX",V.Local.sQuery)
+	F.Intrinsic.Control.EndIf
+	
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sQuery)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Variable.LoadUDTFromRecordset("conx","rst","uGlobal.uShipment",False)
+F.ODBC.conx!rst.Close
+
+F.Intrinsic.Control.For(V.Local.i1,0,V.uGlobal.uShipment.UBound,1)
+	F.Intrinsic.Variable.UDTSeek(V.uGlobal.uCust!CUSTOMER,V.uGlobal.uShipment(V.Local.i1)!CUSTOMER.Trim,0,V.Local.sRet)
+	F.Intrinsic.Math.ConvertToLong(V.Local.sRet,V.Local.iRow1)
+	V.uGlobal.uShipment(V.Local.i1)!NAME.Set(V.uGlobal.uCust(V.Local.iRow1)!NAME.Trim)
+	F.Intrinsic.String.Concat(V.uGlobal.uShipment(V.Local.i1)!ORDER_NO.Trim,"-",V.uGlobal.uShipment(V.Local.i1)!ORDER_SUFFIX.Trim, V.uGlobal.uShipment(V.Local.i1)!DO)
+	V.uGlobal.uShipment(V.Local.i1)!FLAG.Set(False)
+F.Intrinsic.Control.Next(V.Local.i1)
+
+Gui.F_ShipConfirm.gsflexgrid1.LoadFromUDT("V.uGlobal.uShipment","DO::0*!*NAME::1*!*DATE_SHIP::2*!*SHIP_BY::3*!*FLAG::4",2)
+
+F.ODBC.Connection!conx.Close
+
+Program.Sub.LoadFlexgrid.End
+
+program.sub.dlst_shipdate_click.start
+V.Local.iIndex1.Declare(Long)
+V.Local.iIndex2.Declare(Long)
+
+V.Local.sDlst1.Declare(String)
+
+V.Local.iIndex1.Set(V.Screen.F_ShipConfirm!dlst_ShipDate.ListIndex)
+V.Local.iIndex2.Set(V.Screen.F_ShipConfirm!dlst_Customer.ListIndex)
+V.Local.sDlst1.Set(V.Screen.F_ShipConfirm!dlst_Customer.Text)
+
+F.Intrinsic.Control.If(V.Local.sDlst1.Trim,=,"")
+	F.Intrinsic.Control.CallSub(Loadflexgrid,"iParam1",V.Local.iIndex1,"iParam2",0)
+F.Intrinsic.Control.Else
+	F.Intrinsic.Control.CallSub(Loadflexgrid,"iParam1",V.Local.iIndex1,"iParam2",V.Local.iIndex2)
+F.Intrinsic.Control.EndIf
+
+program.sub.dlst_shipdate_click.end
+
+program.sub.f_shipconfirm_unload.start
+F.Intrinsic.Control.End
+
+program.sub.f_shipconfirm_unload.end
+
+program.sub.gsflexgrid1_commandclick.start
+V.Local.iRow.Declare(Long)
+
+V.Local.sQuery.Declare(String)
+V.Local.sShipNo.Declare(String)
+V.Local.sShipDate.Declare(String)
+
+F.Intrinsic.Math.Sub(V.Args.Key,1,V.Local.iRow)
+
+V.Local.sShipNo.Set(V.uGlobal.uShipment(V.Local.iRow)!DO.Trim)
+F.Intrinsic.String.Format(V.uGlobal.uShipment(V.Local.iRow)!DATE_SHIP,"YYYY-MM-DD",V.Local.sShipDate)
+
+F.ODBC.Connection!conx.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+
+F.Intrinsic.String.Concat("SELECT A.*, Cast(0 as Bit) as FLAG FROM GAB_6439_SHIPMENT_CONFIRM A WHERE PCK_NO = '",V.Local.sShipNo.Trim,"' AND DATE_SHIP = '",V.Local.sShipDate.Trim,"' ORDER BY PCK_NO",V.Local.sQuery)
+F.ODBC.Connection!conx.OpenLocalRecordsetRW("rst",V.Local.sQuery)
+F.ODBC.conx!rst.Set!DATE_RECEIVED(V.Ambient.Date)
+F.ODBC.conx!rst.Set!RECEIVED_BY(V.Caller.User)
+F.ODBC.conx!rst.Update
+F.ODBC.conx!rst.Close
+
+F.ODBC.Connection!conx.Close
+
+F.Intrinsic.Variable.UDTFlagOrdinal(V.uGlobal.uShipment,True,V.Local.iRow)
+F.Intrinsic.Variable.UDTDeleteFlagged(V.uGlobal.uShipment)
+
+Gui.F_ShipConfirm.gsflexgrid1.LoadFromUDT("V.uGlobal.uShipment","DO::0*!*NAME::1*!*DATE_SHIP::2*!*SHIP_BY::3*!*FLAG::4",2)
+
+program.sub.gsflexgrid1_commandclick.end
+
+program.sub.gsflexgrid1_checkclick.start
+V.Local.bValue.Declare(Boolean)
+
+Gui.F_ShipConfirm.gsflexgrid1.GetTextMatrix(V.Args.Column,V.Args.Key,V.Local.bValue)
+
+F.Intrinsic.Control.If(V.Local.bValue,=,True)
+	F.Intrinsic.Math.Add(V.Global.iCheckclick,1,V.Global.iCheckclick)
+F.Intrinsic.Control.Else
+	F.Intrinsic.Math.Sub(V.Global.iCheckclick,1,V.Global.iCheckclick)
+F.Intrinsic.Control.EndIf
+
+'F.Intrinsic.Control.If(V.Args.Column,=,"Flag")
+'	F.Intrinsic.Control.If(V.DataTable.dtPart(V.Args.RowIndex).Flag!FieldVal,=,False)
+
+program.sub.gsflexgrid1_checkclick.end
+
+program.sub.dlst_customer_click.start
+V.Local.iIndex1.Declare(Long)
+V.Local.iIndex2.Declare(Long)
+
+V.Local.sDlst1.Declare(String)
+
+V.Local.iIndex1.Set(V.Screen.F_ShipConfirm!dlst_ShipDate.ListIndex)
+V.Local.iIndex2.Set(V.Screen.F_ShipConfirm!dlst_Customer.ListIndex)
+V.Local.sDlst1.Set(V.Screen.F_ShipConfirm!dlst_ShipDate.Text)
+
+F.Intrinsic.Control.If(V.Local.sDlst1.Trim,=,"")
+	F.Intrinsic.Control.CallSub(Loadflexgrid,"iParam1",0,"iParam2",V.Local.iIndex2)
+F.Intrinsic.Control.Else
+	F.Intrinsic.Control.CallSub(Loadflexgrid,"iParam1",V.Local.iIndex1,"iParam2",V.Local.iIndex2)
+F.Intrinsic.Control.EndIf
+
+program.sub.dlst_customer_click.end
+
+program.sub.cmdprocess_click.start
+V.Local.bValue.Declare(Boolean)
+
+V.Local.i1.Declare(Long)
+V.Local.iKey.Declare(Long)
+V.Local.iRow.Declare(Long)
+
+V.Local.sQuery.Declare(String)
+V.Local.sRet.Declare(String)
+V.Local.sShipDate.Declare(String)
+
+F.Intrinsic.Control.If(V.Global.iCheckclick,>,0)
+	F.Intrinsic.UI.InvokeWaitDialog("Processing data.....","GAB_6439_SHIPMENT_CONFIRM")
+	Gui.F_ShipConfirm..Enabled(False)
+	F.ODBC.Connection!conx.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+	
+	F.Intrinsic.Control.For(V.Local.i1,0,V.uGlobal.uShipment.UBound,1)
+		F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.iKey)
+		Gui.F_ShipConfirm.gsflexgrid1.GetTextMatrix(4,V.Local.iKey,V.Local.bValue)
+		
+		F.Intrinsic.Control.If(V.Local.bValue,=,True)
+			F.Intrinsic.String.Format(V.uGlobal.uShipment(V.Local.i1)!DATE_SHIP,"YYYY-MM-DD",V.Local.sShipDate)
+			F.Intrinsic.String.Concat("SELECT DATE_RECEIVED, RECEIVED_BY FROM GAB_6439_SHIPMENT_CONFIRM WHERE ORDER_NO = '",V.uGlobal.uShipment(V.Local.i1)!ORDER_NO.Trim,"' AND ORDER_SUFFIX = '",V.uGlobal.uShipment(V.Local.i1)!ORDER_SUFFIX.Trim,"' AND DATE_SHIP = '",V.Local.sShipDate.Trim,"'",V.Local.sQuery)
+			F.ODBC.Connection!conx.OpenLocalRecordsetRW("rst",V.Local.sQuery)
+			F.ODBC.conx!rst.Set!DATE_RECEIVED(V.Ambient.Date)
+			F.ODBC.conx!rst.Set!RECEIVED_BY(V.Caller.User)
+			F.ODBC.conx!rst.Update
+			F.ODBC.conx!rst.Close
+			Gui.F_ShipConfirm.gsflexgrid1.TextMatrix(4,V.Local.iKey,False)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Next(V.Local.i1)
+	
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst","SELECT A.*, Cast(0 as Bit) as FLAG FROM GAB_6439_SHIPMENT_CONFIRM A WHERE RECEIVED_BY IS NULL ORDER BY ORDER_NO,ORDER_SUFFIX")
+	F.Intrinsic.Variable.LoadUDTFromRecordset("conx","rst","uGlobal.uShipment",False)
+	F.ODBC.conx!rst.Close
+	
+	F.Intrinsic.Control.For(V.Local.i1,0,V.uGlobal.uShipment.UBound,1)
+		F.Intrinsic.Variable.UDTSeek(V.uGlobal.uCust!CUSTOMER,V.uGlobal.uShipment(V.Local.i1)!CUSTOMER.Trim,0,V.Local.sRet)
+		F.Intrinsic.Math.ConvertToLong(V.Local.sRet,V.Local.iRow)
+		V.uGlobal.uShipment(V.Local.i1)!NAME.Set(V.uGlobal.uCust(V.Local.iRow)!NAME.Trim)
+		F.Intrinsic.String.Concat(V.uGlobal.uShipment(V.Local.i1)!ORDER_NO.Trim,"-",V.uGlobal.uShipment(V.Local.i1)!ORDER_SUFFIX.Trim,V.uGlobal.uShipment(V.Local.i1)!DO)
+	F.Intrinsic.Control.Next(V.Local.i1)
+		
+	Gui.F_ShipConfirm.gsflexgrid1.LoadFromUDT("V.uGlobal.uShipment","DO::0*!*NAME::1*!*DATE_SHIP::2*!*SHIP_BY::3*!*FLAG::4",2)
+	
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst","SELECT DISTINCT DATE_SHIP FROM GAB_6439_SHIPMENT_CONFIRM WHERE RECEIVED_BY IS NULL ORDER BY DATE_SHIP")
+	F.Intrinsic.Variable.LoadUDTFromRecordset("conx","rst","uGlobal.uShipDate",False)
+	
+	Gui.F_ShipConfirm.dlst_ShipDate.ClearItems
+	Gui.F_ShipConfirm.dlst_ShipDate.AddItem("All",0)
+	F.Intrinsic.Control.For(V.Local.i1,0,V.uGlobal.uShipDate.UBound,1)
+		F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.iRow)
+		V.uGlobal.uShipDate(V.Local.i1)!INDEX.Set(V.Local.iRow)
+		F.Intrinsic.String.Format(V.uGlobal.uShipDate(V.Local.i1)!DATE_SHIP,"D MMM YYYY",V.Local.sShipDate)
+		Gui.F_ShipConfirm.dlst_ShipDate.AddItem(V.Local.sShipDate,V.Local.iRow)
+	F.Intrinsic.Control.Next(V.Local.i1)
+	F.ODBC.conx!rst.Close
+'	Gui.F_ShipConfirm.dlst_ShipDate.Text("All")
+	
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst","SELECT DISTINCT CUSTOMER FROM GAB_6439_SHIPMENT_CONFIRM WHERE RECEIVED_BY IS NULL ORDER BY CUSTOMER")
+	F.Intrinsic.Variable.LoadUDTFromRecordset("conx","rst","uGlobal.uCustS",False)
+	
+	Gui.F_ShipConfirm.dlst_Customer.ClearItems
+	Gui.F_ShipConfirm.dlst_Customer.AddItem("All",0)
+	F.Intrinsic.Control.For(V.Local.i1,0,V.uGlobal.uCustS.UBound,1)
+		F.Intrinsic.Variable.UDTSeek(V.uGlobal.uCust!CUSTOMER,V.uGlobal.uCustS(V.Local.i1)!CUSTOMER.Trim,0,V.Local.sRet)
+		F.Intrinsic.Math.ConvertToLong(V.Local.sRet,V.Local.iRow)
+		V.uGlobal.uCustS(V.Local.i1)!NAME.Set(V.uGlobal.uCust(V.Local.iRow)!NAME.Trim)
+		F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.iRow)
+		Gui.F_ShipConfirm.dlst_Customer.AddItem(V.uGlobal.uCustS(V.Local.i1)!NAME.Trim,V.Local.iRow)
+		V.uGlobal.uCustS(V.Local.i1)!INDEX.Set(V.Local.iRow)
+	F.Intrinsic.Control.Next(V.Local.i1)
+	F.ODBC.conx!rst.Close
+	
+	F.ODBC.Connection!conx.Close
+	Gui.F_ShipConfirm..Enabled(True)
+	F.Intrinsic.UI.CloseWaitDialog
+F.Intrinsic.Control.EndIf
+
+program.sub.cmdprocess_click.end
+
+Program.Sub.Comments.Start
+${$0$}$GAB_6439_SHIPMENT_CONFIRM$}$SUPERVSR$}$15/2/2016
+${$3$}$0$}$$}$0$}$-1$}$$}$12:00:00 AM$}$Sales Orders and Work Order Revisions
+${$5$}$2.0.0.0$}$2
+${$6$}$dyunus$}$20210729092920263$}$xZ6SHi8g7O0Qsxe6AiO2NH3PnOKQRy0TDj/C5GF5v7iRJPjqaAiAqB/Vf12QdX8kz1XcsPddQEo=
+Program.Sub.Comments.End
+
